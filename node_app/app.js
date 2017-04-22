@@ -6,9 +6,6 @@ const urlencoded = require('body-parser').urlencoded;
 const express = require('express');
 const app = express();
 const env = require('node-env-file');
-// const Phaser = require('./phaser.min.js')
-// const main = require('./main.js')
-
 
 env(__dirname + '/.env');
 
@@ -55,7 +52,9 @@ app.post('/voice', (request, response) => {
       // Otherwise have the caller join as a regular participant
       console.log("player called: " + request.body.From);
       dialNode.conference('My conference', {
-        startConferenceOnEnter: false
+        startConferenceOnEnter: false,
+        waitUrl: 'https://p.scdn.co/mp3-preview/ecb1639c58ceb6311919373fe56399e3ec242045?cid=null',
+        waitMethod: 'GET'
       });
     }
   });
