@@ -3,14 +3,20 @@
 
 const twilio = require('twilio');
 const urlencoded = require('body-parser').urlencoded;
-const app = require('express')();
+const express = require('express');
+const app = express();
 const env = require('node-env-file');
+// const Phaser = require('./phaser.min.js')
+// const main = require('./main.js')
+
 
 env(__dirname + '/.env');
 
-const MODERATOR = process.env.TWILIO_NUMBER;
+const MODERATOR = process.env.NAOMI_SKYPE;
 
 var http = require('http');
+var fs = require('fs');
+var index = fs.readFileSync('index.html');
 var bodyParser = require('body-parser');
 
 var accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
@@ -21,16 +27,16 @@ var client = new twilio.RestClient(accountSid, authToken);
 
 // Parse incoming POST params with Express middleware
 app.use(urlencoded({ extended: false }));
+app.use(express.static('.'))
 
 app.get('/', function (req, res) {
-  res.send('Test!')
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(index);
 })
 
 // Create a route that will handle Twilio webhook requests, sent as an
 // HTTP POST to /voice in our application
 app.post('/voice', (request, response) => {
-
-  console.log("someone called");
 
   // Use the Twilio Node.js SDK to build an XML response
   let twiml = new twilio.TwimlResponse();
@@ -40,12 +46,14 @@ app.post('/voice', (request, response) => {
     // If the caller is our MODERATOR, then start the conference when they
     // join and end the conference when they leave
     if(request.body.From == MODERATOR) {
+      console.log("moderator called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: true,
         endConferenceOnExit: true
       });
     } else {
       // Otherwise have the caller join as a regular participant
+      console.log("player called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: false
       });
