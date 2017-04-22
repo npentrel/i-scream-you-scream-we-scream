@@ -94,8 +94,6 @@ var mainState = {
 
       // Add the 6 pipes
       // With one big hole at position 'hole' and 'hole + 1'
-      console.log(y);
-      console.log((y)/60);
       for (var i = 0; i < ((y)/60); i++)
           if (i != hole && i != hole + 1 && i != hole + 2 && i != hole + 3 )
               this.addOnePipe(x - 15, i * 60 + 10);
