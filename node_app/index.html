@@ -13,7 +13,7 @@ src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
 
     <body>
 
-    <canvas class="visualizer" width="640" height="100"></canvas> 
+    <canvas class="visualizer" width="640" height="100"></canvas>
 
 
 </div>
@@ -57,7 +57,7 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 
         var source = audioCtx.createMediaStreamSource(conn.getRemoteStream());
-                
+
         var analyser = audioCtx.createAnalyser();
         source.connect(analyser);
 
@@ -118,7 +118,6 @@ meydaAnalyzer.start()
       for(var i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
 
-
         //console.log(barHeight)
 
         canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
@@ -134,8 +133,8 @@ meydaAnalyzer.start()
 
         },2000)
 
-        
-       
+
+
 
       });
 
@@ -146,7 +145,7 @@ meydaAnalyzer.start()
     //   Twilio.Device.incoming( (conn)=> {
 
     //       conn.accept();
-        
+
     //   });
 
     })

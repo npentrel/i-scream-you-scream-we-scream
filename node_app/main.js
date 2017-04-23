@@ -90,12 +90,12 @@ var mainState = {
   addRowOfPipes: function() {
       // Randomly pick a number between 1 and 5
       // This will be the hole position
-      var hole = Math.floor(Math.random() * (((y)/60) - 4)) + 1;
+      var hole = Math.floor(Math.random() * (((y)/60) - 6)) + 1;
 
       // Add the 6 pipes
       // With one big hole at position 'hole' and 'hole + 1'
       for (var i = 0; i < ((y)/60); i++)
-          if (i != hole && i != hole + 1 && i != hole + 2 && i != hole + 3 )
+          if (i != hole && i != hole + 1 && i != hole + 2 && i != hole + 3 && i != hole + 4 && i != hole + 5)
               this.addOnePipe(x - 15, i * 60 + 10);
       if (this.score_start > 1) {
         this.score += 1;
