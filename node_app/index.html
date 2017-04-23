@@ -23,6 +23,10 @@ src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
 var canvas = document.querySelector('.visualizer');
 var canvasCtx = canvas.getContext("2d");
 
+
+
+
+
 $(function () {
   console.log('Requesting Capability Token...');
   $.getJSON('/token')
@@ -51,17 +55,37 @@ $(function () {
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 
+
         var source = audioCtx.createMediaStreamSource(conn.getRemoteStream());
                 
         var analyser = audioCtx.createAnalyser();
         source.connect(analyser);
+
+
+        function meydaCallback(data){
+            console.log(data)
+        }
+
+
+var meydaAnalyzer = Meyda.createMeydaAnalyzer({
+  "audioContext":audioCtx, // required
+  "source":source, // required
+  "bufferSize": 512, // required
+  "featureExtractors": ["rms"], // optional - A string, or an array of strings containing the names of features you wish to extract.
+  "callback": meydaCallback() // optional callback in which to receive the features for each buffer
+});
+
+meydaAnalyzer.start()
+
+
+
 
   WIDTH = canvas.width;
   HEIGHT = canvas.height;
 
         analyser.fftSize = 256;
     var bufferLength = analyser.frequencyBinCount;
-    console.log(bufferLength);
+    //console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
 
     canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -82,7 +106,7 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         barHeight = dataArray[i];
 
 
-        console.log(barHeight)
+        //console.log(barHeight)
 
         canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
         canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
