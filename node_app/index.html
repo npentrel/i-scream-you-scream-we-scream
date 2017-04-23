@@ -87,12 +87,13 @@ meydaAnalyzer.start()
     var bufferLength = analyser.frequencyBinCount;
     //console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
+    window.dataArray = dataArray;
 
     canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    function draw() {
-      drawVisual = requestAnimationFrame(draw);
+    var isJumping = false;
 
+    function draw() {
       analyser.getByteFrequencyData(dataArray);
 
       canvasCtx.fillStyle = 'rgb(0, 0, 0)';
@@ -101,6 +102,18 @@ meydaAnalyzer.start()
       var barWidth = (WIDTH / bufferLength) * 2.5;
       var barHeight;
       var x = 0;
+      var shouts = 0;
+      for(var x= 0; x<25; x++){
+            shouts += window.dataArray[x];
+
+      }
+      console.log(shouts);
+      window.shouts = shouts;
+      if(shouts > 5000 && !isJumping) {
+          mainState.jump();
+          isJumping = true;
+          setTimeout(function() { isJumping = false; }, 500);
+      }
 
       for(var i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
@@ -113,6 +126,7 @@ meydaAnalyzer.start()
 
         x += barWidth + 1;
       }
+      requestAnimationFrame(draw);
     };
 
     draw();
