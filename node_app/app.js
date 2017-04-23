@@ -2,6 +2,7 @@
 'use strict';
 
 const twilio = require('twilio');
+const SpotifyWebApi = require('spotify-web-api-node');
 const urlencoded = require('body-parser').urlencoded;
 const express = require('express');
 const app = express();
@@ -24,6 +25,11 @@ var authToken = process.env.TWILIO_AUTH_TOKEN;   // Your Auth Token from www.twi
 
 var client = new twilio.RestClient(accountSid, authToken);
 
+var spotifyApi = new SpotifyWebApi({
+  clientId : process.env.SPOTIFY_CLIENT_ID,
+  clientSecret :  process.env.SPOTIFY_CLIENT_SECRET
+});
+
 
 // Parse incoming POST params with Express middleware
 app.use(urlencoded({ extended: false }));
@@ -33,6 +39,18 @@ app.get('/', function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(index);
 })
+
+// Get an artist
+spotifyApi.getTrack('20I6sIOMTCkB6w7ryavxtO')
+  .then(function(data) {
+    var preview_url = data.body['preview_url'];
+    console.log(preview_url);
+
+  }, function(err) {
+    console.error(err);
+  });
+
+
 
 // Create a route that will handle Twilio webhook requests, sent as an
 // HTTP POST to /voice in our application
@@ -69,14 +87,14 @@ app.post('/voice', (request, response) => {
       console.log("player called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: false,
-        waitUrl: 'https://p.scdn.co/mp3-preview/ecb1639c58ceb6311919373fe56399e3ec242045?cid=null',
+        waitUrl: preview_url,
         waitMethod: 'GET'
       });
     }
   });
   }
 
- 
+
 
   // Render the response as XML in reply to the webhook request
   response.type('text/xml');
@@ -86,7 +104,7 @@ app.post('/voice', (request, response) => {
 
 app.get('/token', function(request, response) {
   var identity = 'WebRTCWebCLient';
-  
+
   var capability = new twilio.Capability(process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_AUTH_TOKEN);
   capability.allowClientOutgoing(process.env.TWILIO_TWIML_APP_SID);
