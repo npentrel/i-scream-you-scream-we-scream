@@ -90,7 +90,7 @@ var mainState = {
   addRowOfPipes: function() {
       // Randomly pick a number between 1 and 5
       // This will be the hole position
-      var hole = Math.floor(Math.random() * (((y)/60) - 6)) + 1;
+      var hole = Math.floor(Math.random() * (((y)/60) - 9)) + 1;
 
       // Add the 6 pipes
       // With one big hole at position 'hole' and 'hole + 1'
