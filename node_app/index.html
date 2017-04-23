@@ -30,12 +30,13 @@ src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
 <div class="row">
   <div class="col-md-8"><h2><marquee behavior="scroll" direction="left">Call: +44 133 732 0244</marquee></h2> </div>
   <div class="col-md-4"><p style="margin-top: 10px;">
-        <button type="button" class="btn btn-primary btn-lg">Large button</button>
-        <button type="button" class="btn btn-default btn-lg">Large button</button>
+        <a class="btn btn-primary btn-lg" href="#" onclick="Twilio.Device.connect({To: '+447927475341'})">Call Pandelis</a>
+        <a class="btn btn-default btn-lg" href="#" onclick="Twilio.Device.connect({To: '+441337320244'})">Join Conference</a>
+        <a class="btn btn-danger btn-lg" href="#" onclick="Twilio.Device.disconnectAll();">Hang Up</a>
         </p>  </div>
 </div>
 
-    <canvas class="visualizer" width="1000px" height="1000px"></canvas>
+    <canvas class="visualizer" width="1000px" height="400px"></canvas>
 
 
 </div>
