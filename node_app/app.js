@@ -7,6 +7,7 @@ const urlencoded = require('body-parser').urlencoded;
 const express = require('express');
 const app = express();
 const env = require('node-env-file');
+var preview_url = "";
 
 var randomUsername = require('./randos');
 
@@ -43,9 +44,7 @@ app.get('/', function (req, res) {
 // Get an artist
 spotifyApi.getTrack('20I6sIOMTCkB6w7ryavxtO')
   .then(function(data) {
-    var preview_url = data.body['preview_url'];
-    
-    
+    preview_url = data.body['preview_url'];
     console.log(preview_url);
 
   }, function(err) {
@@ -89,7 +88,7 @@ app.post('/voice', (request, response) => {
       console.log("player called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: false,
-        waitUrl: 'https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=null',
+        waitUrl: preview_url,
         waitMethod: 'GET'
       });
     }
