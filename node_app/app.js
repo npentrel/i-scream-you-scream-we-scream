@@ -12,7 +12,7 @@ var randomUsername = require('./randos');
 
 env(__dirname + '/.env');
 
-const MODERATOR = process.env.NAOMI_SKYPE;
+const MODERATOR = process.env.TWILIO_PHONE_NUMBER;
 
 var http = require('http');
 var fs = require('fs');
@@ -41,7 +41,7 @@ app.post('/voice', (request, response) => {
   // Use the Twilio Node.js SDK to build an XML response
   let twiml = new twilio.TwimlResponse();
 
-  if(request.body.To) {
+  if(request.body.To === "+447927475341") {
     console.log('executed')
     console.log('calling ' + request.body.To)
     twiml.dial({ callerId: process.env.TWILIO_PHONE_NUMBER}, function() {
@@ -58,7 +58,7 @@ app.post('/voice', (request, response) => {
   twiml.dial(function(dialNode) {
     // If the caller is our MODERATOR, then start the conference when they
     // join and end the conference when they leave
-    if(request.body.From == MODERATOR) {
+    if(request.body.From == "+447927475341") {
       console.log("moderator called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: true,
