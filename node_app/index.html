@@ -5,9 +5,132 @@
         <title> Flappy Bird Clone </title>
         <script type="text/javascript" src="phaser.min.js"></script>
         <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript"
+src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://unpkg.com/meyda@4.0.4/dist/web/meyda.min.js"></script>
     </head>
 
     <body>
 
+    <canvas class="visualizer" width="640" height="100"></canvas> 
+
+
+</div>
+
+
+        <script>
+var canvas = document.querySelector('.visualizer');
+var canvasCtx = canvas.getContext("2d");
+
+$(function () {
+  console.log('Requesting Capability Token...');
+  $.getJSON('/token')
+    .done(function (data) {
+      console.log('Got a token.');
+      console.log('Token: ' + data.token);
+
+      // Setup Twilio.Device
+      Twilio.Device.setup(data.token);
+
+      Twilio.Device.ready(function (device) {
+        console.log('Twilio.Device Ready!');
+      });
+
+      Twilio.Device.error(function (error) {
+        console.log('Twilio.Device Error: ' + error.message);
+      });
+
+      Twilio.Device.connect(function (conn) {
+        console.log('Successfully established call!');
+
+        setTimeout(()=>{
+            console.log(conn.getRemoteStream())
+
+
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+
+        var source = audioCtx.createMediaStreamSource(conn.getRemoteStream());
+                
+        var analyser = audioCtx.createAnalyser();
+        source.connect(analyser);
+
+  WIDTH = canvas.width;
+  HEIGHT = canvas.height;
+
+        analyser.fftSize = 256;
+    var bufferLength = analyser.frequencyBinCount;
+    console.log(bufferLength);
+    var dataArray = new Uint8Array(bufferLength);
+
+    canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+    function draw() {
+      drawVisual = requestAnimationFrame(draw);
+
+      analyser.getByteFrequencyData(dataArray);
+
+      canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+      var barWidth = (WIDTH / bufferLength) * 2.5;
+      var barHeight;
+      var x = 0;
+
+      for(var i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i];
+
+
+        console.log(barHeight)
+
+        canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+        canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
+
+        x += barWidth + 1;
+      }
+    };
+
+    draw();
+
+
+        },2000)
+
+        
+       
+
+      });
+
+      Twilio.Device.disconnect(function (conn) {
+        console.log('Call ended.');
+      });
+
+    //   Twilio.Device.incoming( (conn)=> {
+
+    //       conn.accept();
+        
+    //   });
+
+    })
+    .fail(function () {
+      console.log('Could not get a token from server!');
+    });
+
+  // Bind button to make call
+  var callMeNow = () => {
+    // get the phone number to connect the call to
+    var params = {
+      To: '+447927475341'
+    };
+
+    console.log('Calling ' + params.To + '...');
+    Twilio.Device.connect(params);
+  };
+
+
+
+});
+
+        </script>
     </body>
 </html>

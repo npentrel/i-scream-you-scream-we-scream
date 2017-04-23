@@ -13,8 +13,8 @@
     "node": ">=4.0.0"
   },
   "dependencies": {
-    "body-parser": "^1.17.1",
     "assert": "^1.4.1",
+    "body-parser": "^1.17.1",
     "express": "^4.14.1",
     "node-env-file": "^0.1.8",
     "twilio": "^2.11.1"
