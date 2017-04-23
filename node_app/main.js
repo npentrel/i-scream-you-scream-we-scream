@@ -15,6 +15,7 @@ var mainState = {
     // Load the bird sprite
     game.load.image('bird', 'assets/anvil_small.png');
     game.load.image('pipe', 'assets/pipe.png');
+    game.load.image('sfg', 'assets/sfg.png');
   },
 
   create: function() {
@@ -23,6 +24,8 @@ var mainState = {
 
     // Set the physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    this.startSFG();
 
     // Display the bird at the position x=100 and y=245
     this.bird = game.add.sprite(100, 245, 'bird');
@@ -67,6 +70,12 @@ var mainState = {
   restartGame: function() {
       // Start the 'main' state, which restarts the game
       game.state.start('main');
+  },
+
+  startSFG: function() {
+    var bkg = game.add.sprite(200, 200, 'sfg');
+    game.physics.arcade.enable(bkg);
+    bkg.body.velocity.x = -200;
   },
 
   addOnePipe: function(x, y) {
