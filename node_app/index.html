@@ -13,7 +13,7 @@ src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
 
     <body>
 
-    <canvas class="visualizer" width="640" height="100"></canvas> 
+    <canvas class="visualizer" width="640" height="100"></canvas>
 
 
 </div>
@@ -57,7 +57,7 @@ var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 
         var source = audioCtx.createMediaStreamSource(conn.getRemoteStream());
-                
+
         var analyser = audioCtx.createAnalyser();
         source.connect(analyser);
 
@@ -87,12 +87,13 @@ meydaAnalyzer.start()
     var bufferLength = analyser.frequencyBinCount;
     //console.log(bufferLength);
     var dataArray = new Uint8Array(bufferLength);
+    window.dataArray = dataArray;
 
     canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    function draw() {
-      drawVisual = requestAnimationFrame(draw);
+    var isJumping = false;
 
+    function draw() {
       analyser.getByteFrequencyData(dataArray);
 
       canvasCtx.fillStyle = 'rgb(0, 0, 0)';
@@ -101,10 +102,21 @@ meydaAnalyzer.start()
       var barWidth = (WIDTH / bufferLength) * 2.5;
       var barHeight;
       var x = 0;
+      var shouts = 0;
+      for(var x= 0; x<25; x++){
+            shouts += window.dataArray[x];
+
+      }
+      console.log(shouts);
+      window.shouts = shouts;
+      if(shouts > 5000 && !isJumping) {
+          mainState.jump();
+          isJumping = true;
+          setTimeout(function() { isJumping = false; }, 500);
+      }
 
       for(var i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
-
 
         //console.log(barHeight)
 
@@ -113,6 +125,7 @@ meydaAnalyzer.start()
 
         x += barWidth + 1;
       }
+      requestAnimationFrame(draw);
     };
 
     draw();
@@ -120,8 +133,8 @@ meydaAnalyzer.start()
 
         },2000)
 
-        
-       
+
+
 
       });
 
@@ -132,7 +145,7 @@ meydaAnalyzer.start()
     //   Twilio.Device.incoming( (conn)=> {
 
     //       conn.accept();
-        
+
     //   });
 
     })
