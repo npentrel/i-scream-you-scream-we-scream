@@ -44,6 +44,8 @@ app.get('/', function (req, res) {
 spotifyApi.getTrack('20I6sIOMTCkB6w7ryavxtO')
   .then(function(data) {
     var preview_url = data.body['preview_url'];
+    
+    
     console.log(preview_url);
 
   }, function(err) {
@@ -87,7 +89,7 @@ app.post('/voice', (request, response) => {
       console.log("player called: " + request.body.From);
       dialNode.conference('My conference', {
         startConferenceOnEnter: false,
-        waitUrl: preview_url,
+        waitUrl: 'https://p.scdn.co/mp3-preview/335bede49342352cddd53cc83af582e2240303bb?cid=null',
         waitMethod: 'GET'
       });
     }
