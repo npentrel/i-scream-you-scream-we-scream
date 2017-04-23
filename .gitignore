@@ -2,3 +2,5 @@
 /node_app/*.env
 /node_app/.env
 node_modules
+/node_app/*.log
+/node_app/node_modules
