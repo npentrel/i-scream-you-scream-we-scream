@@ -11,9 +11,20 @@ src="//media.twiliocdn.com/sdk/js/client/v1.4/twilio.min.js"></script>
 <script src="https://unpkg.com/meyda@4.0.4/dist/web/meyda.min.js"></script>
     </head>
 
+    <style>
+
+        .visualizer {
+            bottom: 0px;
+            position: absolute;
+            left: 0px;
+            z-index: 1000;
+        }
+
+    </style>
+
     <body>
 
-    <canvas class="visualizer" width="640" height="100"></canvas>
+    <canvas class="visualizer" width="1000px" height="1000px"></canvas>
 
 
 </div>
@@ -96,8 +107,8 @@ meydaAnalyzer.start()
     function draw() {
       analyser.getByteFrequencyData(dataArray);
 
-      canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      //canvasCtx.fillStyle = 'rgba(113, 197, 207, 0)';
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
       var barWidth = (WIDTH / bufferLength) * 2.5;
       var barHeight;
@@ -120,7 +131,7 @@ meydaAnalyzer.start()
 
         //console.log(barHeight)
 
-        canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+        canvasCtx.fillStyle = 'rgb(' + (barHeight+1000) + ',50,50)';
         canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
 
         x += barWidth + 1;
